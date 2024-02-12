@@ -18,9 +18,12 @@ VGA::VGA()
         ;
 
     // port setup
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOEEN;
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOIEN;
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOJEN;
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOKEN;
+
+    setPinAF(GPIOE, 14, 0b1110);
 
     setPinAF(GPIOI, 0, 0b1110);  // LCD_G5
     setPinAF(GPIOI, 1, 0b1110);  // LCD_G6
@@ -31,7 +34,7 @@ VGA::VGA()
     setPinAF(GPIOI, 7, 0b1110);  // LCD_B7
     setPinAF(GPIOI, 12, 0b1110); // LCD_HSYNC
     setPinAF(GPIOI, 13, 0b1110); // LCD_VSYNC
-    setPinAF(GPIOI, 14, 0b1110); // LCD_CLK
+    // setPinAF(GPIOI, 14, 0b1110); // LCD_CLK
     setPinAF(GPIOI, 15, 0b1110); // LCD_R0
 
     setPinAF(GPIOJ, 0, 0b1110);  // LCD_R1

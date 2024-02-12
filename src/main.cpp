@@ -1,12 +1,12 @@
 #include <stm32f4xx.h>
-#include "vga.h"
+// #include "vga.h"
 
 void systemClockInit()
 {
     RCC->CR |= (1 << 16); // enable HSE
     while ((RCC->CR & (1 << 17)) == 0)
         ;
-    FLASH->ACR |= FLASH_ACR_LATENCY_4WS; // flash memory delay
+    FLASH->ACR |= FLASH_ACR_LATENCY_3WS; // flash memory delay
     RCC->PLLCFGR |= RCC_PLLCFGR_PLLSRC;  // HSE as PLL clock entry
 
     // PLL clock configuration
@@ -38,9 +38,23 @@ void systemClockInit()
 
 int main()
 {
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+
+    RCC->CFGR &= ~(0b111 << 24);
+    // RCC->CFGR |= (0b100 << 24);
+    RCC->CFGR &= ~(0b11 << 21);
+    // RCC->CFGR |= (0b10 << 21);
+    GPIOA->MODER |= (2 << (8 << 1)); // PA8 as AF
+    GPIOA->OSPEEDR |= (3 << (8 << 1));
+    GPIOA->AFR[1] = 0;
+
+    RCC->CR |= (0b1 << 0); // HSI ON
+    while ((RCC->CR & (0b1 << 1)) == 0)
+        ;
+    RCC->CFGR &= ~(0b11 << 0);
     // setup
-    systemClockInit();
-    VGA vga;
+    // systemClockInit();
+    // VGA vga;
 
     while (1)
     {

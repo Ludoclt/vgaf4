@@ -16,7 +16,7 @@
 
 #define PIXEL_SIZE 4
 
-const uint32_t fb[WIDTH * HEIGHT];
+const uint32_t fb[WIDTH * HEIGHT] = {};
 
 class VGA
 {
