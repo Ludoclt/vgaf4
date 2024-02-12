@@ -8,10 +8,10 @@ VGA::VGA()
     RCC->APB2ENR |= RCC_APB2ENR_LTDCEN; // enable LTDC clock
 
     // PLLSAI (pixel clock) configuration
-    RCC->PLLSAICFGR |= (192 << 6); // PLLSAIN *192
-    RCC->PLLSAICFGR |= (5 << 28);  // PLLSAIR /5
-    RCC->DCKCFGR &= ~(0b11 << 16); // reset
-    RCC->DCKCFGR |= (0b01 << 16);  // /4
+    RCC->PLLSAICFGR |= (200 << 6);    // PLLSAIN *200
+    RCC->PLLSAICFGR |= (0b010 << 28); // PLLSAIR /2
+    RCC->DCKCFGR &= ~(0b11 << 16);    // reset
+    RCC->DCKCFGR |= (0b01 << 16);     // /4
 
     RCC->CR |= RCC_CR_PLLSAION; // enable PLLSAI
     while ((RCC->CR & RCC_CR_PLLSAIRDY) == 0)
@@ -58,6 +58,12 @@ VGA::VGA()
     LTDC->BPCR |= (((HSYNC + HBP - 1) << 16) | (VSYNC + VBP - 1));
     LTDC->AWCR |= (((HSYNC + HBP + WIDTH - 1) << 16) | (VSYNC + VBP + HEIGHT - 1));
     LTDC->TWCR |= (((HSYNC + HBP + WIDTH + HFP - 1) << 16) | (VSYNC + VBP + HEIGHT + VFP - 1));
+    // polarity
+    LTDC->GCR &= ~(0b1 << 31); // HSYNC negative
+    LTDC->GCR &= ~(0b1 << 30); // VSYNC negative
+
+    // bg color
+    LTDC->BCCR = 0;
 
     // layer setup
     LTDC_Layer2->WHPCR |= (((HSYNC + HBP + WIDTH - 1) << 16) | (HSYNC + HBP));
@@ -70,8 +76,12 @@ VGA::VGA()
     LTDC_Layer2->CFBLR |= (((WIDTH * PIXEL_SIZE) << 16) | (WIDTH * PIXEL_SIZE + 3));
     LTDC_Layer2->CFBLNR |= HEIGHT;
 
+    // enable layer and LTDC activation
     LTDC_Layer2->CR |= LTDC_LxCR_LEN;
-
-    // activate LTDC
     LTDC->GCR |= LTDC_GCR_LTDCEN;
+}
+
+void VGA::setPixel(uint16_t x, uint16_t y, uint32_t color)
+{
+    // fb[(y - 1) * WIDTH + x] = color;
 }

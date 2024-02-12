@@ -32,8 +32,8 @@ void systemClockInit()
     RCC->CFGR |= (0b1010 << 4) | (0b101 << 10) | (0b100 << 13); // AHB div: 180/8 = 22.5 mhz APB1 div: 180/4 = 45 mhz APB2 div: 180/2 = 90 mhz
 
     RCC->CFGR |= 0b10; // set PLL as source of the system frequency
-    while ((RCC->CFGR & (RCC_CFGR_SWS)) != RCC_CFGR_SWS_1)
-        ;
+    // while ((RCC->CFGR & (RCC_CFGR_SWS)) != RCC_CFGR_SWS_1)
+    //     ;
 }
 
 int main()
