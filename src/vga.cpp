@@ -23,7 +23,7 @@ VGA::VGA()
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOJEN;
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOKEN;
 
-    setPinAF(GPIOE, 14, 0b1110);
+    setPinAF(GPIOE, 14, 0b1110); // LCD_CLK
 
     setPinAF(GPIOI, 0, 0b1110);  // LCD_G5
     setPinAF(GPIOI, 1, 0b1110);  // LCD_G6
@@ -62,8 +62,8 @@ VGA::VGA()
     LTDC->AWCR |= (((HSYNC + HBP + WIDTH - 1) << 16) | (VSYNC + VBP + HEIGHT - 1));
     LTDC->TWCR |= (((HSYNC + HBP + WIDTH + HFP - 1) << 16) | (VSYNC + VBP + HEIGHT + VFP - 1));
     // polarity
-    LTDC->GCR &= ~(0b1 << 31); // HSYNC negative
-    LTDC->GCR &= ~(0b1 << 30); // VSYNC negative
+    LTDC->GCR &= ~(1 << 31); // HSYNC negative
+    LTDC->GCR &= ~(1 << 30); // VSYNC negative
 
     // bg color
     LTDC->BCCR = 0;
