@@ -59,7 +59,7 @@ VGA::VGA()
     setPinAF(GPIOG, 12, 0b1110); // LCD_B1
 
     setPinAF(GPIOH, 2, 0b1110); // LCD_R0
-    setPinAF(GPIOH, 3, 0b1110); // LCD_R1
+    setPinAF(GPIOH, 3, 0b1110); // LCD_R1 missing pin on nucleo 144 board
 
     // timing setup
     LTDC->SSCR |= (((HSYNC - 1) << 16) | (VSYNC - 1));
