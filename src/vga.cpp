@@ -1,6 +1,6 @@
 #include "vga.h"
 
-#include "pin.h"
+#include "gpio.h"
 
 VGA::VGA()
 {
@@ -18,43 +18,48 @@ VGA::VGA()
         ;
 
     // port setup
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOEEN;
-    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOIEN;
-    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOJEN;
-    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOKEN;
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOGEN;
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOHEN;
 
+    setPinAF(GPIOA, 3, 0b1110);  // LCD_B5
+    setPinAF(GPIOA, 4, 0b1110);  // LCD_VSYNC
+    setPinAF(GPIOA, 6, 0b1110);  // LCD_G2
+    setPinAF(GPIOA, 8, 0b1110);  // LCD_R6
+    setPinAF(GPIOA, 11, 0b1110); // LCD_R4
+    setPinAF(GPIOA, 12, 0b1110); // LCD_R5
+
+    setPinAF(GPIOB, 0, 0b1001);  // LCD_R3
+    setPinAF(GPIOB, 8, 0b1110);  // LCD_B6
+    setPinAF(GPIOB, 9, 0b1110);  // LCD_B7
+    setPinAF(GPIOB, 10, 0b1110); // LCD_G4
+    setPinAF(GPIOB, 11, 0b1110); // LCD_G5
+
+    setPinAF(GPIOC, 6, 0b1110);  // LCD_HSYNC
+    setPinAF(GPIOC, 7, 0b1110);  // LCD_G6
+    setPinAF(GPIOC, 10, 0b1110); // LCD_R2
+
+    setPinAF(GPIOD, 3, 0b1110);  // LCD_G7
+    setPinAF(GPIOD, 6, 0b1110);  // LCD_B2
+    setPinAF(GPIOD, 10, 0b1110); // LCD_B3
+
+    setPinAF(GPIOE, 4, 0b1110);  // LCD_B0
+    setPinAF(GPIOE, 5, 0b1110);  // LCD_G0
+    setPinAF(GPIOE, 6, 0b1110);  // LCD_G1
+    setPinAF(GPIOE, 11, 0b1110); // LCD_G3
+    setPinAF(GPIOE, 12, 0b1110); // LCD_B4
+    setPinAF(GPIOE, 13, 0b1110); // LCD_DE
     setPinAF(GPIOE, 14, 0b1110); // LCD_CLK
+    setPinAF(GPIOE, 15, 0b1110); // LCD_R7
 
-    setPinAF(GPIOI, 0, 0b1110);  // LCD_G5
-    setPinAF(GPIOI, 1, 0b1110);  // LCD_G6
-    setPinAF(GPIOI, 2, 0b1110);  // LCD_G7
-    setPinAF(GPIOI, 4, 0b1110);  // LCD_B4
-    setPinAF(GPIOI, 5, 0b1110);  // LCD_B5
-    setPinAF(GPIOI, 6, 0b1110);  // LCD_B6
-    setPinAF(GPIOI, 7, 0b1110);  // LCD_B7
-    setPinAF(GPIOI, 12, 0b1110); // LCD_HSYNC
-    setPinAF(GPIOI, 13, 0b1110); // LCD_VSYNC
-    // setPinAF(GPIOI, 14, 0b1110); // LCD_CLK
-    setPinAF(GPIOI, 15, 0b1110); // LCD_R0
+    setPinAF(GPIOG, 12, 0b1110); // LCD_B1
 
-    setPinAF(GPIOJ, 0, 0b1110);  // LCD_R1
-    setPinAF(GPIOJ, 1, 0b1110);  // LCD_R2
-    setPinAF(GPIOJ, 2, 0b1110);  // LCD_R3
-    setPinAF(GPIOJ, 3, 0b1110);  // LCD_R4
-    setPinAF(GPIOJ, 4, 0b1110);  // LCD_R5
-    setPinAF(GPIOJ, 5, 0b1110);  // LCD_R6
-    setPinAF(GPIOJ, 6, 0b1110);  // LCD_R7
-    setPinAF(GPIOJ, 7, 0b1110);  // LCD_G0
-    setPinAF(GPIOJ, 8, 0b1110);  // LCD_G1
-    setPinAF(GPIOJ, 9, 0b1110);  // LCD_G2
-    setPinAF(GPIOJ, 10, 0b1110); // LCD_G3
-    setPinAF(GPIOJ, 11, 0b1110); // LCD_G4
-    setPinAF(GPIOJ, 12, 0b1110); // LCD_B0
-    setPinAF(GPIOJ, 13, 0b1110); // LCD_B1
-    setPinAF(GPIOJ, 14, 0b1110); // LCD_B2
-    setPinAF(GPIOJ, 15, 0b1110); // LCD_B3
-
-    setPinAF(GPIOK, 7, 0b1110); // LCD_DE
+    setPinAF(GPIOH, 2, 0b1110); // LCD_R0
+    setPinAF(GPIOH, 3, 0b1110); // LCD_R1
 
     // timing setup
     LTDC->SSCR |= (((HSYNC - 1) << 16) | (VSYNC - 1));
